@@ -41,40 +41,30 @@ void signal_handler(int signal) {
 }
 
 int main() {
-    // Initialize shared memory
-    int shm_fd = shm_open(dungeon_shm_name, O_RDWR, 0666);
+
+    int shm_fd = shm_open(dungeon_shm_name, O_RDWR, 0);
     if (shm_fd == -1) {
-        perror("Error creating shared memory");
+        perror("shm_open");
         return 1;
     }
+    // Map the shared memory into the process's address space
     dungeon = mmap(NULL, sizeof(struct Dungeon), PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
     if (dungeon == MAP_FAILED) {
-        perror("Error mapping shared memory");
+        perror("mmap");
         return 1;
     }
-
-    // Set up signal handler
     struct sigaction sa;
     sa.sa_handler = &signal_handler;
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = 0;
     sigaction(DUNGEON_SIGNAL, &sa, NULL);
-
-    // Wait for dungeon to start
+    
     while(dungeon->running){
         pause();
     }
-
-    // Pick the lock
-    srand(time(NULL)); // seed the random number generator
-    float target_value = (float)rand() / (float)RAND_MAX * MAX_PICK_ANGLE;
-    bool success = pick_lock(target_value);
-
-    if (success) {
-        printf("Rogue succeeded!\n");
-    } else {
-        printf("Rogue failed!\n");
-    }
-
+    
+    //sleep(SECONDS_TO_ATTACK);
+    munmap(dungeon, sizeof(struct Dungeon));
+    shm_unlink(dungeon_shm_name);
     return 0;
 }
