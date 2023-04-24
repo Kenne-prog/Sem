@@ -35,40 +35,28 @@ int main(int argc, char *argv[]) {
 
     // Fork processes for barbarian, wizard, and rogue
     dungeon->running = true;
+    
     sleep(1);
     pid_t barbarian_pid = fork();
     sleep(1);
-    if (barbarian_pid == -1) {
-        perror("Error forking Barbarian process");
-        exit(EXIT_FAILURE);
-    } else if (barbarian_pid == 0) {
+    if (barbarian_pid == 0) {
         // Child process for Barbarian
         execl("./barbarian.o", "./barbarian", NULL);
-        perror("Error executing Barbarian process");
-        exit(EXIT_FAILURE);
     }
+
     sleep(1);
     pid_t wizard_pid = fork();
     sleep(1);
-    if (wizard_pid == -1) {
-        perror("Error forking Wizard process");
-        exit(EXIT_FAILURE);
-    } else if (wizard_pid == 0) {
+    if (wizard_pid == 0) {
         execl("./wizard.o", "./wizard", NULL);
-        perror("Error executing Wizard process");
-        exit(EXIT_FAILURE);
     }
+
     sleep(1);
     pid_t rogue_pid = fork();
     sleep(1);
-    if (rogue_pid == -1) {
-        perror("Error forking Rogue process");
-        exit(EXIT_FAILURE);
-    } else if (rogue_pid == 0) {
+    if (rogue_pid == 0) {
         // Child process for Rogue
         execl("./rogue.o", "./rogue", NULL);
-        perror("Error executing Rogue process");
-        exit(EXIT_FAILURE);
     }
     
     
