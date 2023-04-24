@@ -11,8 +11,7 @@
 
 struct Dungeon* dungeon;
 void signal_handler(int signum) {
-    int enemyHealth = dungeon-> enemy.health;
-    dungeon->barbarian.attack = enemyHealth;
+    dungeon->barbarian.attack = dungeon-> enemy.health;
 }
 
 
@@ -34,6 +33,7 @@ int main() {
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = 0;
     sigaction(DUNGEON_SIGNAL, &sa, NULL);
+    
     while(dungeon->running){
         pause();
     }
