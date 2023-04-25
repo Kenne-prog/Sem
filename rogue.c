@@ -45,7 +45,7 @@ void sem_handler(int signal) {
     printf("SEMAPHIRE SIGNAMAL");
     sem_t *door_sem_1 = sem_open("/LeverOne", 0);
     sem_t *door_sem_2 = sem_open("/LeverTwo", 0);
-    printf("Rogue: Found word '%s'\n", dungeon->treasure);
+    //printf("Rogue: Found word '%s'\n", dungeon->treasure);
     // Wait for both semaphores to be available
     sem_wait(door_sem_1);
     sem_wait(door_sem_2);
@@ -53,13 +53,14 @@ void sem_handler(int signal) {
     // Get the treasure from the dungeon
     for (int i = 0; i < 4; i++) {
         dungeon->spoils[i] = dungeon->treasure[i];
-        printf("Rogue: Found character '%c'\n", dungeon->treasure[i]);
+        //printf("Rogue: Found character '%c'\n", dungeon->treasure[i]);
         usleep(100000);
     }
 
     // Copy the treasure to the spoils field
     strncpy(dungeon->spoils, dungeon->treasure, 4);
-    printf("Rogue: Copied treasure to spoils field: %s\n", dungeon->spoils);
+    printf("Rogue: Copied treasure: %s\n", dungeon->spoils);
+    printf("Rogue: Copied spoils field: %s\n", dungeon->spoils);
 
 // Release the semaphores
     sem_post(door_sem_1);
