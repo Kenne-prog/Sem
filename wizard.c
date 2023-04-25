@@ -11,10 +11,34 @@
 #include "dungeon_settings.h"
 struct Dungeon* dungeon;
 
+void decrypt(char message[], int key)
+{
+    int i;
+    char ch;
+
+    for(i = 0; message[i] != '\0'; i++)
+    {
+        ch = message[i];
+
+        if(ch >= 'A' && ch <= 'Z')
+        {
+            ch = ((ch - 'A') - key + 26) % 26 + 'A';
+        }
+        else if(ch >= 'a' && ch <= 'z')
+        {
+            ch = ((ch - 'a') - key + 26) % 26 + 'a';
+        }
+
+        message[i] = ch;
+    }
+}
 
 // Signal handler function for SIGUSR1
 void signal_handler(int signal) {
-    // do nothing
+    char code[] = dungeon->barrier.spell;
+    char key = code[0];
+    printf("%c", key);
+    decrypt(dungeon->wizard.spell, key);
 }
 
 int main() {
