@@ -14,12 +14,12 @@
 
 struct Dungeon* dungeon;
 
+float min = 0;
+float max = MAX_PICK_ANGLE;
 
 // Binary search function to pick the lock
 void signal_handler(int signal) {
     dungeon->rogue.pick = 0.0;
-    float min = 0;
-    float max = MAX_PICK_ANGLE;
     float mid = ceil((min + max) / 2);
     bool solved = false;
 
@@ -63,7 +63,8 @@ int main() {
     while(dungeon->running){
         pause();
     }
-    
+    float min = 0;
+    float max = MAX_PICK_ANGLE;
     //sleep(SECONDS_TO_ATTACK);
     munmap(dungeon, sizeof(struct Dungeon));
     shm_unlink(dungeon_shm_name);
