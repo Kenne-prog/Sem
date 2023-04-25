@@ -54,7 +54,6 @@ void sem_handler(int signal) {
     printf("Rogue: Entering the treasure room\n");
     for (int i = 0; i < 4; i++) {
         dungeon->treasure[i] = dungeon->spoils[i];
-        printf("Rogue: Found character '%c'\n", dungeon->treasure[i]);
         strncpy(dungeon->spoils[i], dungeon->treasure[i], 4);
         usleep(1000000);
     }
