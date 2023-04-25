@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <unistd.h>
-#include <math.h>
 #include <signal.h>
 #include <sys/wait.h>
 #include <sys/types.h> 
@@ -34,14 +33,14 @@ int main(int argc, char *argv[]) {
     pid_t barbarian_pid = fork();
     sleep(1);
     if (barbarian_pid == 0) {
-        execl("./barbarian.o", "./barbarian", NULL);
+        execl("./barbarian.o", "./barbarian", "/LeverOne","/LeverTwo", NULL);
     }
 
     sleep(1);
     pid_t wizard_pid = fork();
     sleep(1);
     if (wizard_pid == 0) {
-        execl("./wizard.o", "./wizard", NULL);
+        execl("./wizard.o", "./wizard", "/LeverOne","/LeverTwo", NULL);
     }
 
     sleep(1);
@@ -56,6 +55,8 @@ int main(int argc, char *argv[]) {
     sem_t *door_sem_1 = sem_open("/LeverOne", O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
     sem_t *door_sem_2 = sem_open("/LeverTwo", O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
 
+    sem_close("/LeverOne");
+    sem_close("/LeverTwo");
 
     RunDungeon(wizard_pid, rogue_pid, barbarian_pid);
 

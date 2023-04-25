@@ -9,6 +9,7 @@
 #include <signal.h>
 #include <time.h>
 #include <math.h>
+#include <semaphore.h>
 #include "dungeon_info.h"
 #include "dungeon_settings.h"
 
@@ -40,6 +41,28 @@ void signal_handler(int signal) {
 
 }
 
+void sem_handler(int signal) {
+    sem_t *door_sem_1 = sem_open("/LeverOne", 0);
+    sem_t *door_sem_2 = sem_open("/LeverTwo", 0);
+
+    // Wait for both semaphores to be available
+    sem_wait(door_sem_1);
+    sem_wait(door_sem_2);
+
+    // Get the treasure from the dungeon
+    for (int i = 0; i < 4; i++) {
+        while (!isalpha(dungeon->treasure[i])) {
+            usleep(100000);
+        }
+        dungeon->spoils[i] = dungeon->treasure[i];
+        dungeon->treasure[i] = '\0';
+}
+
+// Release the semaphores
+sem_post(door_sem_1);
+sem_post(door_sem_2);
+
+}
 int main() {
 
     int shm = shm_open(dungeon_shm_name, O_RDWR, 0);
@@ -56,6 +79,11 @@ int main() {
         pause();
     }
     
+    struct sigaction signal;
+    signal.sa_handler = &sem_handler;
+    sigemptyset(&signal.sa_mask);
+    signal.sa_flags = 0;
+    sigaction(SEMAPHORE_SIGNAL, &signal, NULL);
     
     //sleep(SECONDS_TO_ATTACK);
     munmap(dungeon, sizeof(struct Dungeon));
