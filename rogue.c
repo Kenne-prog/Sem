@@ -24,6 +24,7 @@ void signal_handler(int signal) {
 
     while (!picked) {
         dungeon->rogue.pick = mid;
+        usleep(TIME_BETWEEN_ROGUE_TICKS);
 
         if (dungeon->trap.locked) {
             if (dungeon->trap.direction == 'u') {
@@ -36,8 +37,6 @@ void signal_handler(int signal) {
             picked = true;
         }
     }
-
-    return picked;
 }
 
 int main() {
