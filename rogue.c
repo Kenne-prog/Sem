@@ -18,12 +18,12 @@ struct Dungeon* dungeon;
 // Binary search function to pick the lock
 void signal_handler(int signal) {
     float min = 0;
-    float max = 100;
+    float max = MAX_PICK_ANGLE;
     float mid = ceil((min + max) / 2);
     bool solved = false;
-    dungeon->rogue.pick = mid;
 
     while (!solved) {
+        
         dungeon->rogue.pick = mid;
         usleep(TIME_BETWEEN_ROGUE_TICKS);
 
@@ -34,6 +34,10 @@ void signal_handler(int signal) {
                 max = mid;
             }
             mid = ceil((min + max) / 2);
+            if (mid == dungeon->rogue.pick) {
+                float min = 0;
+                float max = MAX_PICK_ANGLE;
+            }
         } else if (dungeon->trap.direction == '-') {
             solved = true;
         }
