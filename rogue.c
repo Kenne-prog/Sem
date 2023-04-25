@@ -35,12 +35,12 @@ void signal_handler(int signal) {
                 max = mid;
             }
             mid = ceil((min + max) / 2);
-            /*
+        
             if (mid == dungeon->rogue.pick) {
                 float min = 0;
                 float max = MAX_PICK_ANGLE;
             }
-            */
+        
         } else if (dungeon->trap.direction == '-') {
             solved = true;
         }
