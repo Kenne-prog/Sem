@@ -44,8 +44,8 @@ int main() {
 
     int shm = shm_open(dungeon_shm_name, O_RDWR, 0);
     // Map the shared memory into the process's address space
-    dungeon = mmap(NULL, sizeof(struct Dungeon), PROT_READ | PROT_WRITE, MAP_SHARED, shm_, 0);
-    
+    dungeon = mmap(NULL, sizeof(struct Dungeon), PROT_READ | PROT_WRITE, MAP_SHARED, shm, 0);
+
     struct sigaction sa;
     sa.sa_handler = &signal_handler;
     sigemptyset(&sa.sa_mask);
