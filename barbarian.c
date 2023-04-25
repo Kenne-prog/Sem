@@ -28,11 +28,11 @@ int main() {
         perror("mmap");
         return 1;
     }
-    struct sigaction sa;
-    sa.sa_handler = &signal_handler;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = 0;
-    sigaction(DUNGEON_SIGNAL, &sa, NULL);
+    struct sigaction signal;
+    signal.sa_handler = &signal_handler;
+    sigemptyset(&signal.sa_mask);
+    signal.sa_flags = 0;
+    sigaction(DUNGEON_SIGNAL, &signal, NULL);
     
     while(dungeon->running){
         pause();
