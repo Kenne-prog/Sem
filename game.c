@@ -36,31 +36,30 @@ int main(int argc, char *argv[]) {
     pid_t barbarian_pid = fork();
     sleep(1);
     if (barbarian_pid == 0) {
-        execl("./barbarian.o", "./barbarian", "/LeverOne","/LeverTwo", NULL);
+        execl("./barbarian.o", "./barbarian", NULL);
     }
 
     sleep(1);
     pid_t wizard_pid = fork();
     sleep(1);
     if (wizard_pid == 0) {
-        execl("./wizard.o", "./wizard", "/LeverOne","/LeverTwo", NULL);
+        execl("./wizard.o", "./wizard", NULL);
     }
 
     sleep(1);
     pid_t rogue_pid = fork();
     sleep(1);
     if (rogue_pid == 0) {
-        execl("./rogue.o", "./rogue", "/LeverOne","/LeverTwo", NULL);
+        execl("./rogue.o", "./rogue", NULL);
     }
     
     // Wait for processes to complete
 
-    sem_close(door_sem_1);
-    sem_close(door_sem_2);
 
     RunDungeon(wizard_pid, rogue_pid, barbarian_pid);
 
-    
+    sem_close(door_sem_1);
+    sem_close(door_sem_2);
 
     if (munmap(dungeon, sizeof(struct Dungeon)) == -1) {
         perror("Error unmapping shared memory");
