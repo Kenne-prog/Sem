@@ -54,12 +54,12 @@ int main(int argc, char *argv[]) {
     }
     
     // Wait for processes to complete
-
+    sem_close(door_sem_1);
+    sem_close(door_sem_2);
 
     RunDungeon(wizard_pid, rogue_pid, barbarian_pid);
 
-    sem_close("/LeverOne");
-    sem_close("/LeverTwo");
+    
 
     if (munmap(dungeon, sizeof(struct Dungeon)) == -1) {
         perror("Error unmapping shared memory");

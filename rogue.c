@@ -51,17 +51,15 @@ void sem_handler(int signal) {
     sem_wait(door_sem_2);
 
     // Get the treasure from the dungeon
-    for (int i = 0; i < 4; i++) {
-        while (!isalpha(dungeon->treasure[i])) {
-            usleep(100000);
-        }
-        dungeon->spoils[i] = dungeon->treasure[i];
-        dungeon->treasure[i] = '\0';
-}
+    dungeon->spoils[0] = dungeon->treasure[0];
+    dungeon->spoils[1] = dungeon->treasure[1];
+    dungeon->spoils[2] = dungeon->treasure[2];
+    dungeon->spoils[3] = dungeon->treasure[3];
+
 
 // Release the semaphores
-sem_post(door_sem_1);
-sem_post(door_sem_2);
+    sem_post(door_sem_1);
+    sem_post(door_sem_2);
 
 }
 int main() {
