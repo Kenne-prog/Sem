@@ -43,7 +43,6 @@ void signal_handler(int signal) {
 
 void sem_handler(int signal) {
     printf("SEMAPHIRE SIGNAMAL");
-    
 
 }
 int main() {
