@@ -45,8 +45,8 @@ void signal_handler(int signal) {
     printf("SHIFFTTTTTTTTTTTTTTTTTT: %d", shift);
     //printf("%c", key);
     //sleep(SECONDS_TO_GUESS_BARRIER);
-    //char* message = decrypt(dungeon->barrier.spell + 1, key);
-    //strcpy(dungeon->wizard.spell, message);
+    char* message = decrypt(dungeon->barrier.spell + 1, shift);
+    strcpy(dungeon->wizard.spell, message);
 }
 
 int main() {
