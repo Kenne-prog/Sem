@@ -56,7 +56,6 @@ int main() {
     while(dungeon->running){
         pause();
     }
-    dungeon->rogue.pick = 0.0;
     
     //sleep(SECONDS_TO_ATTACK);
     munmap(dungeon, sizeof(struct Dungeon));
