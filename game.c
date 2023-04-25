@@ -23,16 +23,11 @@ struct Dungeon* dungeon;
 int main(int argc, char *argv[]) {
     
     int shm_fd = shm_open(dungeon_shm_name, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
-    if (shm_fd == -1){
-        errExit("shm_open");
-    }
-    if (ftruncate(shm_fd, sizeof(struct Dungeon))== -1){
-        errExit("ftruncate");
-    }
+
+    ftruncate(shm_fd, sizeof(struct Dungeon);
+
     struct Dungeon *dungeon = mmap(NULL, sizeof(struct Dungeon), PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
-    if (dungeon == MAP_FAILED){
-        errExit("mmap");
-    }
+
 
     // Fork processes for barbarian, wizard, and rogue
     dungeon->running = true;
