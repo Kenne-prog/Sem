@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
     pid_t rogue_pid = fork();
     sleep(1);
     if (rogue_pid == 0) {
-        execl("./rogue.o", "./rogue", NULL);
+        execl("./rogue.o", "./rogue","/LeverOne","/LeverTwo", NULL);
     }
     
     // Wait for processes to complete
