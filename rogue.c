@@ -27,14 +27,7 @@ void signal_handler(int signal) {
         
         dungeon->rogue.pick = mid;
         usleep(TIME_BETWEEN_ROGUE_TICKS);
-
-        for (int i = 1; i < 101; ++i){
-            dungeon->rogue.pick = i;
-            if (dungeon->trap.direction != '-') {
-                solved = true;
-            }
-        }
-        /*
+        
         if (dungeon->trap.locked) {
             if (dungeon->trap.direction == 'u') {
                 min = mid;
@@ -42,16 +35,15 @@ void signal_handler(int signal) {
                 max = mid;
             }
             mid = ceil((min + max) / 2);
-        
+            /*
             if (mid == dungeon->rogue.pick) {
                 float min = 0;
                 float max = MAX_PICK_ANGLE;
             }
-            
+            */
         } else if (dungeon->trap.direction == '-') {
             solved = true;
         }
-        */
     }
 
 }
