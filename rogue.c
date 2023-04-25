@@ -35,12 +35,12 @@ void signal_handler(int signal) {
                 max = mid;
             }
             mid = ceil((min + max) / 2);
-        
+            /*
             if (mid == dungeon->rogue.pick) {
                 float min = 0;
                 float max = MAX_PICK_ANGLE;
             }
-        
+            */
         } else if (dungeon->trap.direction == '-') {
             solved = true;
         }
@@ -49,6 +49,10 @@ void signal_handler(int signal) {
 }
 
 int main() {
+
+    dungeon->rogue.pick = 0.0;
+    float min = 0;
+    float max = MAX_PICK_ANGLE;
 
     int shm = shm_open(dungeon_shm_name, O_RDWR, 0);
     // Map the shared memory into the process's address space
@@ -63,9 +67,7 @@ int main() {
     while(dungeon->running){
         pause();
     }
-    dungeon->rogue.pick = 0.0;
-    float min = 0;
-    float max = MAX_PICK_ANGLE;
+    
     //sleep(SECONDS_TO_ATTACK);
     munmap(dungeon, sizeof(struct Dungeon));
     shm_unlink(dungeon_shm_name);
