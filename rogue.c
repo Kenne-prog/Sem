@@ -18,7 +18,7 @@ struct Dungeon* dungeon;
 // Binary search function to pick the lock
 void signal_handler(int signal) {
     float min = 0;
-    float max = MAX_PICK_ANGLE;
+    float max = 100;
     float mid = ceil((min + max) / 2);
     bool picked = false;
 

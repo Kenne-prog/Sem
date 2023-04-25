@@ -35,7 +35,6 @@ int main(int argc, char *argv[]) {
     pid_t barbarian_pid = fork();
     sleep(1);
     if (barbarian_pid == 0) {
-        // Child process for Barbarian
         execl("./barbarian.o", "./barbarian", NULL);
     }
 
@@ -50,7 +49,6 @@ int main(int argc, char *argv[]) {
     pid_t rogue_pid = fork();
     sleep(1);
     if (rogue_pid == 0) {
-        // Child process for Rogue
         execl("./rogue.o", "./rogue", NULL);
     }
     
