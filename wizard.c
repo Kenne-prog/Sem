@@ -41,7 +41,8 @@ char* decrypt(char message[], int key)
 void signal_handler(int signal) {
     char key = dungeon->barrier.spell[0];   // get the first character as the shift value
     char shift = dungeon->barrier.spell[0];   // get the first character as the shift value
-    printf("Character is %c \n", key,"SHIFFTTTTTTTTTTTTTTTTTT: %c", shift);
+    printf("Character is %c \n", key);
+    printf("SHIFFTTTTTTTTTTTTTTTTTT: %c", shift);
     //printf("%c", key);
     //sleep(SECONDS_TO_GUESS_BARRIER);
     //char* message = decrypt(dungeon->barrier.spell + 1, key);
