@@ -11,7 +11,7 @@
 #include "dungeon_settings.h"
 struct Dungeon* dungeon;
 
-void decrypt(char message[], int key)
+char* decrypt(char message[], int key)
 {
     int i;
     char ch;
@@ -31,6 +31,7 @@ void decrypt(char message[], int key)
 
         message[i] = ch;
     }
+    return message;
 }
 
 // Signal handler function for SIGUSR1
@@ -38,7 +39,8 @@ void signal_handler(int signal) {
     char code[] = dungeon->barrier.spell;
     char key = code[0];
     printf("%c", key);
-    decrypt(dungeon->wizard.spell, key);
+    char* message = decrypt(dungeon->barrier.spell + 1, key);
+    strcpy(dungeon->wizard.spell, message);
 }
 
 int main() {
