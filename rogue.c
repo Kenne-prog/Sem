@@ -14,20 +14,18 @@
 
 struct Dungeon* dungeon;
 
-float min = 0;
-float max = MAX_PICK_ANGLE;
 
 // Binary search function to pick the lock
 void signal_handler(int signal) {
-    dungeon->rogue.pick = 0.0;
+    float min = 0;
+    float max = 100;
     float mid = ceil((min + max) / 2);
-    bool solved = false;
+    bool picked = false;
 
-    while (!solved) {
-        
+    while (!picked && (max - min) > LOCK_THRESHOLD) {
         dungeon->rogue.pick = mid;
-        usleep(TIME_BETWEEN_ROGUE_TICKS*10);
-        
+        usleep(TIME_BETWEEN_ROGUE_TICKS);
+
         if (dungeon->trap.locked) {
             if (dungeon->trap.direction == 'u') {
                 min = mid;
@@ -35,24 +33,14 @@ void signal_handler(int signal) {
                 max = mid;
             }
             mid = ceil((min + max) / 2);
-            /*
-            if (mid == dungeon->rogue.pick) {
-                float min = 0;
-                float max = MAX_PICK_ANGLE;
-            }
-            */
         } else if (dungeon->trap.direction == '-') {
-            solved = true;
+            picked = true;
         }
     }
 
 }
 
 int main() {
-
-    dungeon->rogue.pick = 0.0;
-    float min = 0;
-    float max = MAX_PICK_ANGLE;
 
     int shm = shm_open(dungeon_shm_name, O_RDWR, 0);
     // Map the shared memory into the process's address space
@@ -67,6 +55,7 @@ int main() {
     while(dungeon->running){
         pause();
     }
+    
     
     //sleep(SECONDS_TO_ATTACK);
     munmap(dungeon, sizeof(struct Dungeon));

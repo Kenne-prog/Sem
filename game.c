@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
 
     sleep(1);
     pid_t rogue_pid = fork();
-    sleep(3);
+    sleep(1);
     if (rogue_pid == 0) {
         execl("./rogue.o", "./rogue", NULL);
     }
