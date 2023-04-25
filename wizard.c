@@ -40,10 +40,11 @@ char* decrypt(char message[], int key)
 // Signal handler function for SIGUSR1
 void signal_handler(int signal) {
     char key = dungeon->barrier.spell[0];   // get the first character as the shift value
-    printf("%c", key);
+    printf(key);
+    //printf("%c", key);
     //sleep(SECONDS_TO_GUESS_BARRIER);
-    char* message = decrypt(dungeon->barrier.spell + 1, key);
-    strcpy(dungeon->wizard.spell, message);
+    //char* message = decrypt(dungeon->barrier.spell + 1, key);
+    //strcpy(dungeon->wizard.spell, message);
 }
 
 int main() {
