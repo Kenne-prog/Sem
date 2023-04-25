@@ -75,15 +75,16 @@ int main() {
     sa.sa_flags = 0;
     sigaction(DUNGEON_SIGNAL, &sa, NULL);
     
+    struct sigaction sem_signal;
+    sem_signal.sa_handler = &sem_handler;
+    sigemptyset(&sem_signal.sa_mask);
+    sem_signal.sa_flags = 0;
+    sigaction(SEMAPHORE_SIGNAL, &sem_signal, NULL);
+
     while(dungeon->running){
         pause();
     }
     
-    struct sigaction signal;
-    signal.sa_handler = &sem_handler;
-    sigemptyset(&signal.sa_mask);
-    signal.sa_flags = 0;
-    sigaction(SEMAPHORE_SIGNAL, &signal, NULL);
     
     //sleep(SECONDS_TO_ATTACK);
     munmap(dungeon, sizeof(struct Dungeon));

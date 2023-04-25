@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <ctype.h>
+#include <semaphore.h>
 #include "dungeon_info.h"
 #include "dungeon_settings.h"
 
@@ -38,6 +39,21 @@ void signal_handler(int sig) {
     free(encrypted);   // free the memory allocated for the encrypted string
 }
 
+void sem_handler(int signum) {
+    sem_t *door_sem_1 = sem_open("/LeverOne", 0);
+    sem_t *door_sem_2 = sem_open("/LeverTwo", 0);
+
+    // Wait for both semaphores to be available
+    sem_wait(door_sem_1);
+    sem_wait(door_sem_2);
+
+    // Attack the enemy
+
+    // Release the semaphores
+    sem_post(door_sem_1);
+    sem_post(door_sem_2);
+}
+
 int main() {
     // setup signal handler using sigaction
 
@@ -59,10 +75,16 @@ int main() {
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = 0;
     sigaction(DUNGEON_SIGNAL, &sa, NULL);
+    
+    struct sigaction sem_signal;
+    sem_signal.sa_handler = &sem_handler;
+    sigemptyset(&sem_signal.sa_mask);
+    sem_signal.sa_flags = 0;
+    sigaction(SEMAPHORE_SIGNAL, &sem_signal, NULL);
+
     while(dungeon->running){
         pause();
     }
-
 
 
     // unmap shared memory object from process address space
