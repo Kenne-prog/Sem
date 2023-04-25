@@ -42,6 +42,7 @@ void signal_handler(int signal) {
 }
 
 void sem_handler(int signal) {
+    printf("SEMAPHIRE SIGNAMAL");
     sem_t *door_sem_1 = sem_open("/LeverOne", 0);
     sem_t *door_sem_2 = sem_open("/LeverTwo", 0);
 
