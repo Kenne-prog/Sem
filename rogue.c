@@ -45,7 +45,7 @@ void sem_handler(int signal) {
     printf("SEMAPHIRE SIGNAMAL");
     sem_t *door_sem_1 = sem_open("/LeverOne", 0);
     sem_t *door_sem_2 = sem_open("/LeverTwo", 0);
-    usleep(1000);
+
     // Wait for both semaphores to be available
     sem_wait(door_sem_1);
     sem_wait(door_sem_2);
