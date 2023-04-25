@@ -26,16 +26,16 @@ void signal_handler(int signal) {
         dungeon->rogue.pick = mid;
         usleep(TIME_BETWEEN_ROGUE_TICKS);
 
-        if (dungeon->trap.locked) {
+        if (dungeon->trap.direction == '-') {
+            picked = true;
+        } else if (dungeon->trap.locked) {
             if (dungeon->trap.direction == 'u') {
                 min = mid;
             } else {
                 max = mid;
             }
             mid = ceil((min + max) / 2);
-        } else if (dungeon->trap.direction == '-') {
-            picked = true;
-        }
+        } 
     }
 
     return picked;
