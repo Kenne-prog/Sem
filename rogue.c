@@ -54,7 +54,7 @@ void sem_handler(int signal) {
     for (int i = 0; i < 4; i++) {
         dungeon->spoils[i] = dungeon->treasure[i];
         printf("Rogue: Found character '%c'\n", dungeon->treasure[i]);
-        usleep(100000);
+        usleep(150000);
     }
 
     // Copy the treasure to the spoils field
