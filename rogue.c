@@ -49,7 +49,7 @@ void sem_handler(int signal) {
     // Wait for both semaphores to be available
     sem_wait(door_sem_1);
     sem_wait(door_sem_2);
-
+    printf("Rogue: Found word '%s'\n", dungeon->treasure);
     // Get the treasure from the dungeon
     printf("Rogue: Entering the treasure room\n");
     for (int i = 0; i < 4; i++) {
