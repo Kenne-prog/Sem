@@ -17,7 +17,6 @@ char* caesar_cipher(char* spell, int shift) {
     char* encrypted = malloc(SPELL_BUFFER_SIZE); // allocate memory for the encrypted string
     for (int i = 0; i < SPELL_BUFFER_SIZE; i++) {
         int ch = (int) spell[i];
-        //int og = (int) spell[i];
         
         if (ch >= 65 && ch <= 90) {   // uppercase letters
             ch = ((ch - shift - 65 + 26) % 26) + 65;   // shift and wrap around
