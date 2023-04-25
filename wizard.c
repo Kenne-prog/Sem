@@ -20,13 +20,16 @@ char* decrypt(char message[], int key)
     {
         ch = message[i];
 
-        if(ch >= 'A' && ch <= 'Z')
+        if(isalpha(ch))
         {
-            ch = ((ch - 'A') - key + 26) % 26 + 'A';
-        }
-        else if(ch >= 'a' && ch <= 'z')
-        {
-            ch = ((ch - 'a') - key + 26) % 26 + 'a';
+            if(isupper(ch))
+            {
+                ch = ((ch - 'A') - key + 26) % 26 + 'A';
+            }
+            else
+            {
+                ch = ((ch - 'a') - key + 26) % 26 + 'a';
+            }
         }
 
         message[i] = ch;
