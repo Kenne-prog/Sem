@@ -45,9 +45,9 @@ int main(int argc, char *argv[]) {
         execl("./wizard.o", "./wizard", NULL);
     }
 
-    sleep(2);
+    sleep(1);
     pid_t rogue_pid = fork();
-    sleep(2);
+    sleep(1);
     if (rogue_pid == 0) {
         execl("./rogue.o", "./rogue", NULL);
     }
