@@ -54,12 +54,12 @@ void sem_handler(int signal) {
     printf("Rogue: Entering the treasure room\n");
     for (int i = 0; i < 4; i++) {
         dungeon->treasure[i] = dungeon->spoils[i];
-        strncpy(dungeon->spoils[i], dungeon->treasure[i], 4);
-        usleep(1000000);
+        printf("Rogue: Found character '%c'\n", dungeon->treasure[i]);
+        usleep(10000);
     }
 
     // Copy the treasure to the spoils field
-    
+    strncpy(dungeon->spoils, dungeon->treasure, 4);
     printf("Rogue: Copied treasure to spoils field: %s\n", dungeon->spoils);
 
 // Release the semaphores
