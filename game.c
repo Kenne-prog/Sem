@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include <math.h>
 #include <signal.h>
 #include <sys/wait.h>
 #include <sys/types.h> 
