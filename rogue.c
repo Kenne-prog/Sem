@@ -19,7 +19,8 @@ struct Dungeon* dungeon;
 void signal_handler(int signal) {
     float min = 0;
     float max = MAX_PICK_ANGLE;
-    float mid = round((min + max) / 2);
+    float mid = (min + max) / 2;
+    mid = round(mid);
     bool success = false;
 
     while (!success && (max - min) > LOCK_THRESHOLD) {
