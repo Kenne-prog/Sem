@@ -20,25 +20,25 @@ void signal_handler(int signal) {
     float min = 0;
     float max = MAX_PICK_ANGLE;
     float mid = ceil((min + max) / 2);
-    bool picked = false;
+    bool success = false;
 
-    while (!picked && (max - min) > LOCK_THRESHOLD) {
+    while (!success && (max - min) > LOCK_THRESHOLD) {
         dungeon->rogue.pick = mid;
         usleep(TIME_BETWEEN_ROGUE_TICKS);
 
-        if (dungeon->trap.direction == '-') {
-            picked = true;
-        } else if (dungeon->trap.locked) {
+        if (dungeon->trap.locked) {
             if (dungeon->trap.direction == 'u') {
                 min = mid;
             } else {
                 max = mid;
             }
             mid = ceil((min + max) / 2);
-        } 
+        } else if (dungeon->trap.direction == '-') {
+            success = true;
+        }
     }
 
-    return picked;
+    return success;
 }
 
 int main() {
