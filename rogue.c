@@ -58,7 +58,7 @@ void sem_handler(int signal) {
     }
 
     // Copy the treasure to the spoils field
-    strncpy(dungeon->treasure, dungeon->spoils, 4);
+    strncpy(dungeon->spoils, dungeon->treasure, 4);
     printf("Rogue: Copied treasure to spoils field: %s\n", dungeon->spoils);
 
 // Release the semaphores
