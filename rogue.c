@@ -20,9 +20,9 @@ void signal_handler(int signal) {
     float min = 0;
     float max = 100;
     float mid = ceil((min + max) / 2);
-    bool picked = false;
+    bool solved = false;
 
-    while (!picked && (max - min) > LOCK_THRESHOLD) {
+    while (!solved && (max - min) > LOCK_THRESHOLD) {
         dungeon->rogue.pick = mid;
         usleep(TIME_BETWEEN_ROGUE_TICKS);
 
@@ -34,7 +34,7 @@ void signal_handler(int signal) {
             }
             mid = ceil((min + max) / 2);
         } else if (dungeon->trap.direction == '-') {
-            picked = true;
+            solved = true;
         }
     }
 
