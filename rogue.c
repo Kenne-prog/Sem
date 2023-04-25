@@ -32,7 +32,7 @@ void signal_handler(int signal) {
             } else {
                 min = mid;
             }
-            mid = (min + max) / 2;
+            mid = ceil((min + max) / 2);
         } else if (dungeon->trap.direction == '-') {
             success = true;
         }
