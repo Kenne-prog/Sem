@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
     
     int shm_fd = shm_open(dungeon_shm_name, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
 
-    ftruncate(shm_fd, sizeof(struct Dungeon);
+    ftruncate(shm_fd, sizeof(struct Dungeon));
 
     struct Dungeon *dungeon = mmap(NULL, sizeof(struct Dungeon), PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
 
@@ -51,7 +51,6 @@ int main(int argc, char *argv[]) {
     pid_t rogue_pid = fork();
     sleep(1);
     if (rogue_pid == 0) {
-        // Child process for Rogue
         execl("./rogue.o", "./rogue", NULL);
     }
     
