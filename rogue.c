@@ -63,6 +63,7 @@ int main() {
     while(dungeon->running){
         pause();
     }
+    dungeon->rogue.pick = 0.0;
     float min = 0;
     float max = MAX_PICK_ANGLE;
     //sleep(SECONDS_TO_ATTACK);
