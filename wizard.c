@@ -43,6 +43,7 @@ void signal_handler(int signal) {
     printf("%c", key);
     //sleep(SECONDS_TO_GUESS_BARRIER);
     char* message = decrypt(dungeon->wizard.spell, key);
+    strcpy(dungeon->wizard.spell, message);
 }
 
 int main() {
