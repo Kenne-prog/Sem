@@ -28,9 +28,9 @@ void signal_handler(int signal) {
 
         if (dungeon->trap.locked) {
             if (dungeon->trap.direction == 'u') {
-                max = mid;
-            } else {
                 min = mid;
+            } else {
+                max = mid;
             }
             mid = ceil((min + max) / 2);
         } else if (dungeon->trap.direction == '-') {
