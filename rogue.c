@@ -8,6 +8,7 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <time.h>
+#include <math.h>
 #include "dungeon_info.h"
 #include "dungeon_settings.h"
 
@@ -18,7 +19,7 @@ struct Dungeon* dungeon;
 void signal_handler(int signal) {
     float min = 0;
     float max = MAX_PICK_ANGLE;
-    float mid = ceil((min + max) / 2);
+    float mid = round((min + max) / 2);
     bool success = false;
 
     while (!success && (max - min) > LOCK_THRESHOLD) {
