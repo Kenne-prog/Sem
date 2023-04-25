@@ -29,6 +29,9 @@ int main(int argc, char *argv[]) {
     // Fork processes for barbarian, wizard, and rogue
     dungeon->running = true;
     
+    sem_t *door_sem_1 = sem_open("/LeverOne", O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
+    sem_t *door_sem_2 = sem_open("/LeverTwo", O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
+
     sleep(1);
     pid_t barbarian_pid = fork();
     sleep(1);
@@ -51,9 +54,6 @@ int main(int argc, char *argv[]) {
     }
     
     // Wait for processes to complete
-
-    sem_t *door_sem_1 = sem_open("/LeverOne", O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
-    sem_t *door_sem_2 = sem_open("/LeverTwo", O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
 
     sem_close("/LeverOne");
     sem_close("/LeverTwo");
