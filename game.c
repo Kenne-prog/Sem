@@ -36,14 +36,14 @@ int main(int argc, char *argv[]) {
     pid_t barbarian_pid = fork();
     sleep(1);
     if (barbarian_pid == 0) {
-        execl("./barbarian.o", "./barbarian", door_sem_1, door_sem_2, NULL);
+        execl("./barbarian.o", "./barbarian", NULL);
     }
 
     sleep(1);
     pid_t wizard_pid = fork();
     sleep(1);
     if (wizard_pid == 0) {
-        execl("./wizard.o", "./wizard",door_sem_1, door_sem_2, NULL);
+        execl("./wizard.o", "./wizard", NULL);
     }
 
     sleep(1);
