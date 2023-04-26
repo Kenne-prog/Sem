@@ -23,7 +23,7 @@ void sem_handler(int signum) {
     // Wait for both semaphores to be available
     sem_wait(door_sem_1);
     sem_wait(door_sem_2);
-
+    printf("Barb: Entering the treasure room\n");
     /*
     int result = strcmp(dungeon->spoils, dungeon->treasure);
     while(result != 0){  

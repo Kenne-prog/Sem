@@ -48,7 +48,7 @@ void sem_handler(int signum) {
     sem_wait(door_sem_1);
     sem_wait(door_sem_2);
 
-
+    printf("Wiz: Entering the treasure room\n");
     // Attack the enemy
     /*
     int value = strcmp(dungeon->spoils, dungeon->treasure);
