@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <sys/types.h>
+#include <signal.h>
 #include <semaphore.h>
 #include "dungeon_info.h"
 #include "dungeon_settings.h"

@@ -3,6 +3,7 @@
 #include <string.h>
 #include <signal.h>
 #include <unistd.h>
+#include <signal.h>
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <ctype.h>
