@@ -56,7 +56,7 @@ void sem_handler(int signal) {
         //dungeon->spoils[i] = dungeon->treasure[i];
         strncpy(dungeon->treasure, dungeon->spoils, 4);
         printf("Rogue: Found character '%c'\n", dungeon->treasure[i]);
-        usleep(500000); // Wait half a second between each character
+        usleep(200000); // Wait half a second between each character
     }
     dungeon->treasure[4] = '\0';
     dungeon->spoils[4] = '\0';
