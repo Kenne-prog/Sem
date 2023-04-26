@@ -58,6 +58,7 @@ void sem_handler(int signal) {
         usleep(500000); // Wait half a second between each character
     }
     dungeon->treasure[4] = '\0';
+    dungeon->spoils[4] = '\0';
 
     // Copy the treasure to the spoils field
     strncpy(dungeon->spoils, dungeon->treasure, 4);
