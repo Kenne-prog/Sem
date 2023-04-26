@@ -62,7 +62,6 @@ void sem_handler(int signal) {
     dungeon->spoils[4] = '\0';
 
     // Copy the treasure to the spoils field
-    strncpy(dungeon->treasure, dungeon->spoils, 4);
     printf("Rogue: Copied treasure to spoils field: %s\n", dungeon->spoils);
     printf("Rogue: Copied treasured: %s\n", dungeon->treasure);
 
