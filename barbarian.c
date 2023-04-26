@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <sys/types.h>
-#include <signal.h>
+#include <string.h>
 #include <semaphore.h>
 #include "dungeon_info.h"
 #include "dungeon_settings.h"
@@ -24,12 +24,12 @@ void sem_handler(int signum) {
     sem_wait(door_sem_1);
     sem_wait(door_sem_2);
 
-
+    /*
     int result = strcmp(dungeon->spoils, dungeon->treasure);
     while(result != 0){  
         usleep(1000);
     }
-
+    */
     // Release the semaphores
     sem_post(door_sem_1);
     sem_post(door_sem_2);
