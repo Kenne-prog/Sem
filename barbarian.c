@@ -24,7 +24,10 @@ void sem_handler(int signum) {
     sem_wait(door_sem_2);
 
 
-    // Attack the enemy
+    int result = strcmp(dungeon->spoils, dungeon->treasure);
+    while(result != 0){  
+        usleep(1000);
+    }
 
     // Release the semaphores
     sem_post(door_sem_1);
