@@ -53,7 +53,6 @@ void sem_handler(int signal) {
     // Get the treasure from the dungeon
     printf("Rogue: Entering the treasure room\n");
     for (int i = 0; i < 4; i++) {
-        dungeon->spoils[i] = dungeon->treasure[i];
         printf("Rogue: Found character '%c'\n", dungeon->treasure[i]);
         usleep(500000); // Wait half a second between each character
     }
