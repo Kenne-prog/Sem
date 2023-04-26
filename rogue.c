@@ -54,7 +54,7 @@ void sem_handler(int signal) {
     printf("Rogue: Entering the treasure room\n");
      for (int i = 0; i < 4; i++) {
         char c;
-        read(dungeon->treasure, &c, 1);
+        read(dungeon->treasure, &c, i);
         dungeon->spoils[i] = c;
         printf("Rogue: Found character '%c'\n", c);
         usleep(500000); // Wait half a second between each character
