@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include <signal.h>
 #include <sys/types.h>
-#include <string.h>
 #include <semaphore.h>
 #include "dungeon_info.h"
 #include "dungeon_settings.h"
@@ -17,20 +16,15 @@ void signal_handler(int signum) {
 }
 
 void sem_handler(int signum) {
-    sem_t *door_sem_1 = sem_open("/LeverOne", 0);
-    sem_t *door_sem_2 = sem_open("/LeverTwo", 0);
+    sem_t *door_sem_2 = sem_open("/LeverTwo", O_RDWR);
 
     // Wait for both semaphores to be available
-    sem_wait(door_sem_1);
     sem_wait(door_sem_2);
 
-    int value = strcmp(dungeon->treasure,dungeon->spoils);  
-    while(value != 0){
-        sleep(1);
-    }
+    // Attack the enemy
 
     // Release the semaphores
-    sem_post(door_sem_1);
+
     sem_post(door_sem_2);
 }
 

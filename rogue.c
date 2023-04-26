@@ -25,7 +25,7 @@ void signal_handler(int signal) {
 
     while (!picked && (max - min) > LOCK_THRESHOLD) {
         dungeon->rogue.pick = mid;
-        usleep(150000);
+        usleep(100000);
 
         if (dungeon->trap.locked) {
             if (dungeon->trap.direction == 'u') {
@@ -43,19 +43,21 @@ void signal_handler(int signal) {
 
 void sem_handler(int signal) {
     printf("SEMAPHIRE SIGNAMAL");
-    sem_t *door_sem_1 = sem_open("/LeverOne", 0);
-    sem_t *door_sem_2 = sem_open("/LeverTwo", 0);
-    printf("Rogue: Found word '%s'\n", dungeon->treasure);
+    sem_t *door_sem_1 = sem_open("/LeverOne", O_RDWR);
+    sem_t *door_sem_2 = sem_open("/LeverTwo", O_RDWR);
+
     // Wait for both semaphores to be available
     sem_wait(door_sem_1);
     sem_wait(door_sem_2);
 
     // Get the treasure from the dungeon
+    printf("Rogue: Entering the treasure room\n");
     for (int i = 0; i < 4; i++) {
-        dungeon->spoils[i] = dungeon->treasure[i];
+        dungeon->treasure[i] = dungeon->spoils[i];
         printf("Rogue: Found character '%c'\n", dungeon->treasure[i]);
-        usleep(150000);
+        usleep(500000); // Wait half a second between each character
     }
+    dungeon->treasure[4] = '\0';
 
     // Copy the treasure to the spoils field
     strncpy(dungeon->spoils, dungeon->treasure, 4);
