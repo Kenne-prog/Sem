@@ -42,7 +42,7 @@ void signal_handler(int signal) {
     }
     else if (signal == SEMAPHORE_SIGNAL){
         sem_t *door_sem_1 = sem_open("/LeverOne", O_RDWR);
-        sem_t *door_sem_2 = sem_open("/LeverTwo", O_RDWR);
+
 
 
         printf("Wizard: Entering the treasure room\n");
