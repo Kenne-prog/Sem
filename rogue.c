@@ -44,10 +44,11 @@ void signal_handler(int signal) {
         printf("SEMAPHIRE SIGNAMAL");
     sem_t *door_sem_1 = sem_open("/LeverOne", 0);
     sem_t *door_sem_2 = sem_open("/LeverTwo", 0);
+
     dungeon->treasure[4] = '\0';
     dungeon->spoils[4] = '\0';
     sleep(1);
-    printf("Rogue: Found word '%s'\n", dungeon->treasure);
+    printf("Rogue: Found word '%d'\n", dungeon->treasure);
 
     // Wait for both semaphores to be available
     sem_wait(door_sem_1);
