@@ -18,31 +18,30 @@ struct Dungeon* dungeon;
 
 // Binary search function to pick the lock
 void signal_handler(int signal) {
-    float min = 0;
-    float max = 100;
-    float mid = ceil((min + max) / 2);
-    bool picked = false;
+    if (signal == DUNGEON_SIGNAL){
+        float min = 0;
+        float max = 100;
+        float mid = ceil((min + max) / 2);
+        bool picked = false;
 
-    while (!picked && (max - min) > LOCK_THRESHOLD) {
-        dungeon->rogue.pick = mid;
-        usleep(10000);
+        while (!picked && (max - min) > LOCK_THRESHOLD) {
+            dungeon->rogue.pick = mid;
+            usleep(10000);
 
-        if (dungeon->trap.locked) {
+            if (dungeon->trap.locked) {
             if (dungeon->trap.direction == 'u') {
-                min = mid;
-            } else {
-                max = mid;
+                    min = mid;
+                } else {
+                    max = mid;
+                }
+                mid = ceil((min + max) / 2);
+            } else if (dungeon->trap.direction == '-') {
+                picked = true;
             }
-            mid = ceil((min + max) / 2);
-        } else if (dungeon->trap.direction == '-') {
-            picked = true;
         }
     }
-
-}
-
-void sem_handler(int signal) {
-    printf("SEMAPHIRE SIGNAMAL");
+    else if (signal == SEMAPHORE_SIGNAL){
+        printf("SEMAPHIRE SIGNAMAL");
     sem_t *door_sem_1 = sem_open("/LeverOne", 0);
     sem_t *door_sem_2 = sem_open("/LeverTwo", 0);
     printf("Rogue: Found word '%s'\n", dungeon->treasure);
@@ -56,16 +55,19 @@ void sem_handler(int signal) {
         printf("Rogue: Found character '%c'\n", dungeon->treasure[i]);
         usleep(100000);
     }
-
+    dungeon->treasure[4] = '\0';
+    dungeon->spoils[4] = '\0';
     // Copy the treasure to the spoils field
     strncpy(dungeon->treasure, dungeon->spoils, 4);
     printf("Rogue: Copied treasure to spoils field: %s\n", dungeon->spoils);
 
-// Release the semaphores
+    // Release the semaphores
     sem_post(door_sem_1);
     sem_post(door_sem_2);
 
+    }
 }
+
 int main() {
 
     int shm = shm_open(dungeon_shm_name, O_RDWR, 0);
@@ -77,13 +79,9 @@ int main() {
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = 0;
     sigaction(DUNGEON_SIGNAL, &sa, NULL);
+    sigaction(SEMAPHORE_SIGNAL, &sa, NULL);
     
-    struct sigaction sem_signal;
-    sem_signal.sa_handler = &sem_handler;
-    sigemptyset(&sem_signal.sa_mask);
-    sem_signal.sa_flags = 0;
-    sigaction(SEMAPHORE_SIGNAL, &sem_signal, NULL);
-
+    sleep(1);
     while(dungeon->running){
         pause();
     }

@@ -12,28 +12,21 @@
 #include <ctype.h>
 
 struct Dungeon* dungeon;
-void signal_handler(int signum) {
-    dungeon->barbarian.attack = dungeon-> enemy.health;
-}
-
-void sem_handler(int signum) {
-    sem_t *door_sem_1 = sem_open("/LeverOne", O_RDWR);
-    sem_t *door_sem_2 = sem_open("/LeverTwo", O_RDWR);
-
-    // Wait for both semaphores to be available
-    sem_wait(door_sem_1);
-    sem_wait(door_sem_2);
-    printf("Barb: Entering the treasure room\n");
-    /*
-    int result = strcmp(dungeon->spoils, dungeon->treasure);
-    while(result != 0){  
-        usleep(1000);
+void signal_handler(int signal) {
+    if (signal == DUNGEON_SIGNAL){
+        dungeon->barbarian.attack = dungeon-> enemy.health;
     }
-    */
-    // Release the semaphores
-    sem_post(door_sem_1);
-    sem_post(door_sem_2);
+    else if (signal == SEMAPHORE_SIGNAL){
+        sem_t *door_sem_1 = sem_open("/LeverOne", O_RDWR);
+        sem_t *door_sem_2 = sem_open("/LeverTwo", O_RDWR);
+
+
+        printf("Barb: Entering the treasure room\n");
+        sem_post(door_sem_1);
+
+    }
 }
+
 
 int main() {
 
@@ -42,17 +35,12 @@ int main() {
     // Map the shared memory into the process's address space
     dungeon = mmap(NULL, sizeof(struct Dungeon), PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
 
-    struct sigaction signal;
-    signal.sa_handler = &signal_handler;
-    sigemptyset(&signal.sa_mask);
-    signal.sa_flags = 0;
-    sigaction(DUNGEON_SIGNAL, &signal, NULL);
-    
-    struct sigaction sem_signal;
-    sem_signal.sa_handler = &sem_handler;
-    sigemptyset(&sem_signal.sa_mask);
-    sem_signal.sa_flags = 0;
-    sigaction(SEMAPHORE_SIGNAL, &sem_signal, NULL);
+    struct sigaction sa;
+    sa.sa_handler = &signal_handler;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = 0;
+    sigaction(DUNGEON_SIGNAL, &sa, NULL);
+    sigaction(SEMAPHORE_SIGNAL, &sa, NULL);
 
     while(dungeon->running){
         pause();
