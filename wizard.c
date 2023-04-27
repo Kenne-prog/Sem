@@ -46,6 +46,7 @@ void signal_handler(int signal) {
 
 
         printf("Wizard: Entering the treasure room\n");
+        sem_post(door_sem_1);
         sem_post(door_sem_2);
     }
     
