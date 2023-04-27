@@ -44,7 +44,11 @@ void signal_handler(int signal) {
         printf("SEMAPHIRE SIGNAMAL");
     sem_t *door_sem_1 = sem_open("/LeverOne", 0);
     sem_t *door_sem_2 = sem_open("/LeverTwo", 0);
+    dungeon->treasure[4] = '\0';
+    dungeon->spoils[4] = '\0';
+    sleep(1);
     printf("Rogue: Found word '%s'\n", dungeon->treasure);
+
     // Wait for both semaphores to be available
     sem_wait(door_sem_1);
     sem_wait(door_sem_2);
@@ -56,8 +60,7 @@ void signal_handler(int signal) {
         printf("Rogue: Found character '%c'\n", dungeon->treasure[i]);
         usleep(1000);
     }
-    dungeon->treasure[4] = '\0';
-    dungeon->spoils[4] = '\0';
+    
     // Copy the treasure to the spoils field
     strcpy(dungeon->spoils, dungeon->treasure);
     printf("Rogue: Copied treasure to spoils field: %s\n", dungeon->spoils);
