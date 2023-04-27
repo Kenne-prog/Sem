@@ -54,7 +54,7 @@ void signal_handler(int signal) {
     for (int i = 0; i < 4; i++) {
         dungeon->spoils[i] = dungeon->treasure[i];
         printf("Rogue: Found character '%c'\n", dungeon->treasure[i]);
-        usleep(100000);
+        usleep(1000);
     }
     dungeon->treasure[4] = '\0';
     dungeon->spoils[4] = '\0';
