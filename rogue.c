@@ -50,7 +50,8 @@ void signal_handler(int signal) {
     // Wait for both semaphores to be available
     sem_wait(door_sem_1);
     sem_wait(door_sem_2);
-
+    dungeon->treasure[4] = '\0';
+    dungeon->spoils[4] = '\0';
     // Get the treasure from the dungeon
     
     while (strlen(dungeon->spoils) <= 4) {
@@ -61,8 +62,7 @@ void signal_handler(int signal) {
     }
     
     
-    dungeon->treasure[4] = '\0';
-    dungeon->spoils[4] = '\0';
+    
     // Copy the treasure to the spoils field
     //strcpy(dungeon->spoils, dungeon->treasure);
     printf("Rogue: Copied treasure to spoils field: %s\n", dungeon->spoils);
