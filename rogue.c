@@ -41,6 +41,7 @@ void signal_handler(int signal) {
         }
     }
     else if (signal == SEMAPHORE_SIGNAL){
+    sleep(1);
     sem_t *door_sem_1 = sem_open("/LeverOne", O_RDWR);
     sem_t *door_sem_2 = sem_open("/LeverTwo", O_RDWR);
 
@@ -60,8 +61,8 @@ void signal_handler(int signal) {
     }
     
     
-    //dungeon->treasure[4] = '\0';
-    //dungeon->spoils[4] = '\0';
+    dungeon->treasure[4] = '\0';
+    dungeon->spoils[4] = '\0';
     // Copy the treasure to the spoils field
     //strcpy(dungeon->spoils, dungeon->treasure);
     printf("Rogue: Copied treasure to spoils field: %s\n", dungeon->spoils);
