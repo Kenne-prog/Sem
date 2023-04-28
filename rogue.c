@@ -54,11 +54,12 @@ void signal_handler(int signal) {
     // Get the treasure from the dungeon
     
     while (strlen(dungeon->spoils) <= 4) {
-        for (int i = 0; i < 4; i++) {
-            dungeon->spoils[i] = dungeon->treasure[i];
-            printf("Rogue: Found character '%c'\n", dungeon->treasure[i]);
-        }
+        dungeon->spoils[0] = dungeon->treasure[0];
+        dungeon->spoils[1] = dungeon->treasure[1];
+        dungeon->spoils[2] = dungeon->treasure[2];
+        dungeon->spoils[3] = dungeon->treasure[3]; 
     }
+    
     
     dungeon->treasure[4] = '\0';
     dungeon->spoils[4] = '\0';
