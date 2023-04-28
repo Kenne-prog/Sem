@@ -53,12 +53,11 @@ void signal_handler(int signal) {
 
     // Get the treasure from the dungeon
     
-    while (strlen(dungeon->spoils) <= 4) {
-        dungeon->spoils[0] = dungeon->treasure[0];
-        dungeon->spoils[1] = dungeon->treasure[1];
-        dungeon->spoils[2] = dungeon->treasure[2];
-        dungeon->spoils[3] = dungeon->treasure[3]; 
+    int spoils_len = strlen(dungeon->spoils);
+    while (spoils_len < 4) {
+        dungeon->spoils[spoils_len++] = dungeon->treasure[spoils_len];
     }
+
     
     
     dungeon->treasure[4] = '\0';
