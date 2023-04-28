@@ -29,8 +29,8 @@ int main(int argc, char *argv[]) {
     // Fork processes for barbarian, wizard, and rogue
     dungeon->running = true;
     
-    sem_t *dungeon_lever_one = sem_open("/LeverOne", O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
-    sem_t *dungeon_lever_two = sem_open("/LeverTwo", O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
+    sem_t *door_sem_1 = sem_open("/LeverOne", O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
+    sem_t *door_sem_2 = sem_open("/LeverTwo", O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
 
     sleep(1);
     pid_t barbarian_pid = fork();
@@ -58,8 +58,8 @@ int main(int argc, char *argv[]) {
 
     RunDungeon(wizard_pid, rogue_pid, barbarian_pid);
 
-    sem_close(dungeon_lever_one);
-    sem_close(dungeon_lever_two);
+    sem_close(door_sem_1);
+    sem_close(door_sem_2);
 
     if (strlen(dungeon->spoils) == 4){
             sem_t *door_sem_1 = sem_open("/LeverOne", 0);
