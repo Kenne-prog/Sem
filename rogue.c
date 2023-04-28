@@ -50,8 +50,7 @@ void signal_handler(int signal) {
     sem_wait(door_sem_2);
 
     // Get the treasure from the dungeon
-
-    strcpy(dungeon->spoils, "");
+    dungeon->spoils[0] = dungeon->treasure[0];
 
     printf("Rogue: has already '%s'\n", dungeon->spoils);
 
