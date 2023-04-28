@@ -45,7 +45,6 @@ void signal_handler(int signal) {
     sem_t *door_sem_2 = sem_open("/LeverTwo", 0);
 
 
-    sleep(1);
     printf("Rogue: Found word '%s'\n", dungeon->treasure);
 
     // Wait for both semaphores to be available
@@ -55,8 +54,10 @@ void signal_handler(int signal) {
     // Get the treasure from the dungeon
     
     while (strlen(dungeon->spoils) <= 4) {
-        strcpy(dungeon->spoils, dungeon->treasure);
-        printf("Rogue: Found character '%s'\n", dungeon->treasure);
+        for (int i = 0; i < 4; i++) {
+            dungeon->spoils[i] = dungeon->treasure[i];
+            printf("Rogue: Found character '%c'\n", dungeon->treasure[i]);
+        }
     }
     
     dungeon->treasure[4] = '\0';
