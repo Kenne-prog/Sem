@@ -22,7 +22,7 @@ void signal_handler(int signal) {
 
 
         printf("Barb: Entering the treasure room\n");
-        sleep(1);
+
         sem_post(door_sem_2);
         printf("Barb: holding\n");
 
