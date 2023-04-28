@@ -50,7 +50,7 @@ void signal_handler(int signal) {
     // Wait for both semaphores to be available
     sem_wait(door_sem_1);
     sem_wait(door_sem_2);
-
+    usleep(50000);
     // Get the treasure from the dungeon
     
     while (strlen(dungeon->spoils) <= 4) {
@@ -58,7 +58,7 @@ void signal_handler(int signal) {
         dungeon->spoils[1] = dungeon->treasure[1];
         dungeon->spoils[2] = dungeon->treasure[2];
         dungeon->spoils[3] = dungeon->treasure[3]; 
-        sleep(1);
+        usleep(50000);
     }
     
     
