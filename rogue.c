@@ -58,12 +58,12 @@ void signal_handler(int signal) {
         dungeon->spoils[1] = dungeon->treasure[1];
         dungeon->spoils[2] = dungeon->treasure[2];
         dungeon->spoils[3] = dungeon->treasure[3];
-        dungeon->treasure[4] = '\0';
-        dungeon->spoils[4] = '\0';
+        
             
     }
     
-    
+    //dungeon->treasure[4] = '\0';
+    //dungeon->spoils[4] = '\0';
     
     // Copy the treasure to the spoils field
     //strcpy(dungeon->spoils, dungeon->treasure);
