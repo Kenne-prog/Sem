@@ -23,18 +23,9 @@ void signal_handler(int signal) {
 
         printf("Barb: Entering the treasure room\n");
         sem_post(door_sem_2);
-        while (strlen(dungeon->spoils) < 5) {
-            usleep(1000);
+        if (strlen(dungeon->spoils) == 4){
+            sem_t *door_sem_2 = sem_open("/LeverTwo", 0);
         }
-
-        // Release the door semaphore
-        sem_post(door_sem_2);
-
-        // Close the semaphore
-        sem_close(door_sem_2);
-
-        // Unlink the semaphore
-        sem_unlink("/LeverTwo");
         printf("Barb: holding\n");
 
     }
