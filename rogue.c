@@ -44,7 +44,7 @@ void signal_handler(int signal) {
     sem_t *door_sem_1 = sem_open("/LeverOne", 0);
     sem_t *door_sem_2 = sem_open("/LeverTwo", 0);
 
-    usleep(1000);
+    usleep(3000);
     printf("Rogue: Found word '%s'\n", dungeon->treasure);
 
     // Wait for both semaphores to be available
