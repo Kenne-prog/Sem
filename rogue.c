@@ -26,7 +26,7 @@ void signal_handler(int signal) {
 
         while (!picked && (max - min) > LOCK_THRESHOLD) {
             dungeon->rogue.pick = mid;
-            usleep(20000);
+            usleep(50000);
 
             if (dungeon->trap.locked) {
             if (dungeon->trap.direction == 'u') {
@@ -58,7 +58,7 @@ void signal_handler(int signal) {
         dungeon->spoils[1] = dungeon->treasure[1];
         dungeon->spoils[2] = dungeon->treasure[2];
         dungeon->spoils[3] = dungeon->treasure[3]; 
-        usleep(10000);
+        usleep(50000);
     }
     
     
