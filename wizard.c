@@ -41,12 +41,12 @@ void signal_handler(int signal) {
         free(encrypted);   // free the memory allocated for the encrypted string
     }
     else if (signal == SEMAPHORE_SIGNAL){
-        sem_t *door_sem_1 = sem_open("/LeverOne", 0);
+        sem_t *dungeon_lever_two = sem_open("/LeverTwo", 0);
 
 
 
         printf("Wizard: Entering the treasure room\n");
-        sem_post(door_sem_1);
+        sem_post(dungeon_lever_two);
 
         printf("Wiz: holding\n");
     }
