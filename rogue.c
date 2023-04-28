@@ -57,7 +57,7 @@ void signal_handler(int signal) {
     
     while (strlen(dungeon->spoils) <= 4) {
         strcpy(dungeon->spoils, dungeon->treasure);
-        printf("Rogue: Found character '%c'\n", dungeon->treasure);
+        printf("Rogue: Found character '%s'\n", dungeon->treasure);
     }
     
     // Copy the treasure to the spoils field
