@@ -18,12 +18,14 @@ void signal_handler(int signal) {
     }
     else if (signal == SEMAPHORE_SIGNAL){
 
-        sem_t *door_sem_2 = sem_open("/LeverTwo", O_RDWR);
+        sem_t *door_sem_2 = sem_open("/LeverTwo", 0);
 
 
         printf("Barb: Entering the treasure room\n");
+        usleep(1000);
         sem_post(door_sem_2);
         printf("Barb: holding\n");
+        usleep(1000);
 
     }
 }
