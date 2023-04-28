@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
 
 
     RunDungeon(wizard_pid, rogue_pid, barbarian_pid);
-
+    sleep(1);
     sem_close(door_sem_1);
     sem_close(door_sem_2);
 
