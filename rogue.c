@@ -58,10 +58,10 @@ void signal_handler(int signal) {
         dungeon->spoils[1] = dungeon->treasure[1];
         dungeon->spoils[2] = dungeon->treasure[2];
         dungeon->spoils[3] = dungeon->treasure[3]; 
-        printf("Rogue: Copied treasure1 to spoils field: %s\n", dungeon->spoils);
+        
         usleep(10000);
     }
-    
+    printf("Rogue: Copied treasure1 to spoils field: %s\n", dungeon->spoils);
     
     dungeon->treasure[4] = '\0';
     dungeon->spoils[4] = '\0';
