@@ -50,7 +50,7 @@ void signal_handler(int signal) {
     sem_wait(door_sem_2);
 
     // Get the treasure from the dungeon
-
+    dungeon->spoils[0] = dungeon->treasure[0];
 
     printf("Rogue: has already '%s'\n", dungeon->spoils);
 
@@ -59,7 +59,7 @@ void signal_handler(int signal) {
         dungeon->spoils[1] = dungeon->treasure[1];
         dungeon->spoils[2] = dungeon->treasure[2];
         dungeon->spoils[3] = dungeon->treasure[3]; 
-        usleep(10000);
+        usleep(100);
     }
     
     
