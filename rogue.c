@@ -26,7 +26,7 @@ void signal_handler(int signal) {
 
         while (!picked && (max - min) > LOCK_THRESHOLD) {
             dungeon->rogue.pick = mid;
-            usleep(50000);
+            usleep(20000);
 
             if (dungeon->trap.locked) {
             if (dungeon->trap.direction == 'u') {
@@ -50,7 +50,7 @@ void signal_handler(int signal) {
     // Wait for both semaphores to be available
     sem_wait(door_sem_1);
     sem_wait(door_sem_2);
-    usleep(50000);
+
     // Get the treasure from the dungeon
     
     while (strlen(dungeon->spoils) <= 4) {
@@ -58,7 +58,7 @@ void signal_handler(int signal) {
         dungeon->spoils[1] = dungeon->treasure[1];
         dungeon->spoils[2] = dungeon->treasure[2];
         dungeon->spoils[3] = dungeon->treasure[3]; 
-        usleep(50000);
+        sleep(2);
     }
     
     
@@ -69,9 +69,8 @@ void signal_handler(int signal) {
     printf("Rogue: Copied treasure to spoils field: %s\n", dungeon->spoils);
 
     // Release the semaphores
-    sem_post(door_sem_2);
     sem_post(door_sem_1);
-    
+    sem_post(door_sem_2);
 
     }
 }
