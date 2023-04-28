@@ -42,7 +42,6 @@ void signal_handler(int signal) {
     }
     else if (signal == SEMAPHORE_SIGNAL){
         sem_t *door_sem_1 = sem_open("/LeverOne", 0);
-        usleep(1000);
 
 
 
