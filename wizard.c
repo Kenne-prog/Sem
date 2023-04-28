@@ -47,9 +47,10 @@ void signal_handler(int signal) {
 
         printf("Wizard: Entering the treasure room\n");
         sem_post(door_sem_1);
-        if (strlen(dungeon->spoils) == 4){
-            sem_t *door_sem_1 = sem_open("/LeverOne", 0);
+        if (strlen(dungeon->spoils) != 4){
+           usleep(1000); 
         }
+        sem_t *door_sem_1 = sem_open("/LeverOne", 0);
         printf("Wiz: holding\n");
     }
     
