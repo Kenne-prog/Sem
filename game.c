@@ -20,18 +20,21 @@
 struct Dungeon* dungeon;
 int main(int argc, char *argv[]) {
     
+    //open shared memory
     int shm = shm_open(dungeon_shm_name, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
 
     ftruncate(shm, sizeof(struct Dungeon));
 
     struct Dungeon *dungeon = mmap(NULL, sizeof(struct Dungeon), PROT_READ | PROT_WRITE, MAP_SHARED, shm, 0);
 
-    // Fork processes for barbarian, wizard, and rogue
     dungeon->running = true;
     
+    //set up semaphores
     sem_t *door_sem_1 = sem_open("/LeverOne", O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
     sem_t *door_sem_2 = sem_open("/LeverTwo", O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
 
+
+    // Fork processes for barbarian, wizard, and rogue
     sleep(1);
     pid_t barbarian_pid = fork();
     sleep(1);
@@ -52,12 +55,11 @@ int main(int argc, char *argv[]) {
     if (rogue_pid == 0) {
         execl("./rogue.o", "./rogue", NULL);
     }
-    
-    // Wait for processes to complete
 
-
+    //run dungeon
     RunDungeon(wizard_pid, rogue_pid, barbarian_pid);
 
+    //close the semaphores
     sem_close(door_sem_1);
     sem_close(door_sem_2);
 
