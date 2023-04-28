@@ -28,7 +28,6 @@ void signal_handler(int signal) {
     }
 }
 
-
 int main() {
 
     int shm_fd = shm_open(dungeon_shm_name, O_RDWR, 0);
