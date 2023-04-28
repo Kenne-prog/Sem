@@ -58,7 +58,7 @@ void signal_handler(int signal) {
         dungeon->spoils[1] = dungeon->treasure[1];
         dungeon->spoils[2] = dungeon->treasure[2];
         dungeon->spoils[3] = dungeon->treasure[3]; 
-        usleep(50000);
+        sleep(1);
     }
     
     
