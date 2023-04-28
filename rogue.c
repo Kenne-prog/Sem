@@ -52,8 +52,8 @@ void signal_handler(int signal) {
     sem_wait(door_sem_2);
 
     // Get the treasure from the dungeon
-    
-    while (strlen(dungeon->spoils) <= 4) {
+    dungeon->treasure[4] = '\0';
+    while (strlen(dungeon->spoils) < 5) {
         dungeon->spoils[0] = dungeon->treasure[0];
         dungeon->spoils[1] = dungeon->treasure[1];
         dungeon->spoils[2] = dungeon->treasure[2];
@@ -61,7 +61,7 @@ void signal_handler(int signal) {
     }
     
     
-    dungeon->treasure[4] = '\0';
+    
     dungeon->spoils[4] = '\0';
     // Copy the treasure to the spoils field
     //strcpy(dungeon->spoils, dungeon->treasure);
