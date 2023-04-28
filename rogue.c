@@ -66,7 +66,11 @@ void signal_handler(int signal) {
     dungeon->spoils[4] = '\0';
     // Copy the treasure to the spoils field
     //strcpy(dungeon->spoils, dungeon->treasure);
-    printf("Rogue: Copied treasure to spoils field: %s\n", dungeon->spoils);
+    printf("Rogue: Copied treasure1 to spoils field: %c\n", dungeon->spoils[0]);
+    printf("Rogue: Copied treasure2 to spoils field: %c\n", dungeon->spoils[1]);
+    printf("Rogue: Copied treasure3 to spoils field: %c\n", dungeon->spoils[2]);
+    printf("Rogue: Copied treasure4 to spoils field: %c\n", dungeon->spoils[3]);
+
 
     // Release the semaphores
     sem_post(door_sem_1);
