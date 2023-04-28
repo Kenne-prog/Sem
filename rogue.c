@@ -51,8 +51,7 @@ void signal_handler(int signal) {
 
     // Get the treasure from the dungeon
     dungeon->spoils[0] = dungeon->treasure[0];
-    dungeon->spoils[1] = dungeon->treasure[1];
-    dungeon->spoils[2] = dungeon->treasure[2];
+
     printf("Rogue: has already '%s'\n", dungeon->spoils);
 
     while (strlen(dungeon->spoils) <= 4) {
