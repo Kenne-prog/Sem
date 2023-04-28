@@ -57,9 +57,15 @@ int main(int argc, char *argv[]) {
 
 
     RunDungeon(wizard_pid, rogue_pid, barbarian_pid);
-    sleep(1);
+
     sem_close(door_sem_1);
     sem_close(door_sem_2);
+
+    if (strlen(dungeon->spoils) == 4){
+            sem_t *door_sem_1 = sem_open("/LeverOne", 0);
+            sem_t *door_sem_2 = sem_open("/LeverTwo", 0);
+        }
+
 
     if (munmap(dungeon, sizeof(struct Dungeon)) == -1) {
         perror("Error unmapping shared memory");
