@@ -51,7 +51,7 @@ void signal_handler(int signal) {
     sem_wait(door_sem_2);
 
     // Get the treasure from the dungeon
-    usleep(10000);
+    //usleep(10000);
     while (strlen(dungeon->spoils) <= 4) {
         dungeon->spoils[0] = dungeon->treasure[0];
         dungeon->spoils[1] = dungeon->treasure[1];
