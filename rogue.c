@@ -68,8 +68,9 @@ void signal_handler(int signal) {
     printf("Rogue: Copied treasure to spoils field: %s\n", dungeon->spoils);
 
     // Release the semaphores
-    sem_post(door_sem_1);
     sem_post(door_sem_2);
+    sem_post(door_sem_1);
+    
 
     }
 }
