@@ -65,3 +65,4 @@ int main(int argc, char *argv[]) {
     sem_close(sem_two);
 
     return 0;
+}
