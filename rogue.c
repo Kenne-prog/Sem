@@ -1,25 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <string.h>
-#include <unistd.h>
+#include <sys/types.h>
 #include <sys/mman.h>
-#include <sys/stat.h>
+#include <unistd.h>
 #include <fcntl.h>
-#include <signal.h>
+#include <ctype.h>
 #include <time.h>
 #include <math.h>
+#include <signal.h>
 #include <semaphore.h>
+#include <string.h>
+
 #include "dungeon_info.h"
 #include "dungeon_settings.h"
 
-struct Dungeon* dungeon;
+struct Dungeon* dungeon; // initializes the dungeon struct in this class
 
-
-
-void signal_handler(int signal) {
-    // if dungeon singal binary search function to pick the lock
-    if (signal == DUNGEON_SIGNAL){
+void rogue_signal_handler(int signals) {
+    if (signals == DUNGEON_SIGNAL){
         float min = 0;
         float max = 100;
         float mid = ceil((min + max) / 2);
@@ -41,17 +40,14 @@ void signal_handler(int signal) {
             }
         }
     }
-    //if a a semaphore signal is recieved it will copy the treasure into spoils
-    else if (signal == SEMAPHORE_SIGNAL){
-    sem_t *door_sem_1 = sem_open("/LeverOne", 0);
-    sem_t *door_sem_2 = sem_open("/LeverTwo", 0);
+    else if (signals == SEMAPHORE_SIGNAL){
+    sem_t *sem_one = sem_open(dungeon_lever_one, 0);
+    sem_t *sem_two = sem_open(dungeon_lever_two, 0);
 
 
-    // wait for both semaphores to be available
-    sem_wait(door_sem_1);
-    sem_wait(door_sem_2);
+    sem_wait(sem_one);
+    sem_wait(sem_two);
 
-    // get the treasure from the dungeon
     while (strlen(dungeon->spoils) <= 4) {
         dungeon->spoils[0] = dungeon->treasure[0];
         dungeon->spoils[1] = dungeon->treasure[1];
@@ -63,36 +59,32 @@ void signal_handler(int signal) {
     dungeon->treasure[4] = '\0';
     dungeon->spoils[4] = '\0';
     
-
-    // Release the semaphores
-    sem_post(door_sem_1);
-    sem_post(door_sem_2);
+    sem_post(sem_one);
+    sem_post(sem_two);
     }
 }
 
+
 int main() {
+    int fd = shm_open(dungeon_shm_name, O_RDWR, 0); // opens the shared memory segment
+    // maps the shared memeory 
+    dungeon = mmap(NULL, sizeof(struct Dungeon), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
 
-    //open shared memory
-    int shm_fd = shm_open(dungeon_shm_name, O_RDWR, 0);
+    struct sigaction act;
+    act.sa_handler = &rogue_signal_handler;
+    sigemptyset(&act.sa_mask);
+    act.sa_flags = 0;
+    sigaction(DUNGEON_SIGNAL, &act, NULL);
+    sigaction(SEMAPHORE_SIGNAL, &act, NULL);
 
-    // Map the shared memory into the process's address space
-    dungeon = mmap(NULL, sizeof(struct Dungeon), PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
-
-    //signal hnadler
-    struct sigaction sa;
-    sa.sa_handler = &signal_handler;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = 0;
-    sigaction(DUNGEON_SIGNAL, &sa, NULL);
-    sigaction(SEMAPHORE_SIGNAL, &sa, NULL);
-
-    //wait for the signal
     sleep(1);
+
     while(dungeon->running){
         pause();
     }
     
-    munmap(dungeon, sizeof(struct Dungeon));
-    shm_unlink(dungeon_shm_name);
+    munmap(dungeon, sizeof(struct Dungeon)); // unmaps the shared memory
+    shm_unlink(dungeon_shm_name); // removes the shared memory
+       
     return 0;
 }

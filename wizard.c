@@ -1,78 +1,71 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <signal.h>
 #include <unistd.h>
-#include <string.h>
-#include <fcntl.h>
 #include <sys/mman.h>
+#include <fcntl.h>
 #include <ctype.h>
+#include <signal.h>
 #include <semaphore.h>
+#include <string.h>
+
 #include "dungeon_info.h"
 #include "dungeon_settings.h"
 
-struct Dungeon* dungeon;
+struct Dungeon* dungeon; // initializes the dungeon struct in this class
 
-//this will decrypt
-char* decrypt(char* spell, int key) {
-    char* decrypted = malloc(SPELL_BUFFER_SIZE); 
-    for (int i = 0; i < SPELL_BUFFER_SIZE; i++) {
-        int chara = (int) spell[i];
-        //uppercase
-        if (chara >= 65 && chara <= 90) {  
-            chara = ((chara - key - 65 + 26) % 26) + 65; 
+char* caesar_cypher(char* encrypted, int shift) { // caesar cypher shift function
+    char* answer = malloc(SPELL_BUFFER_SIZE); // allocates the memory for the answer 
+    shift = shift % 26; // modulus the the value of the first character by the len of the alphabet
+
+    for (int i = 0; i < SPELL_BUFFER_SIZE; i++) { // runs through each character in the encrypted phrase
+        int letter = (int) encrypted[i]; // gets each character as it runs through loop
+        // if statements checks if the character is a letter in the alphabet and for caps/lower cases (skips spaces and punctuation)
+        if (letter >= 65 && letter <= 90) { // checks if the letter is capitalized
+            // left shift from the letter to decrypt, subtract by 'A', add len of alphabet, mod 26 and add 'A' for roll
+            letter = ((letter - shift - 65 + 26) % 26) + 65;
         }
-        //lowercase
-        else if (chara >= 97 && chara <= 122) {  
-            chara = ((chara - key - 97 + 26) % 26) + 97;  
+        else if (letter >= 97 && letter <= 122) { // checks if the letter is a lower cased
+            // left shift from the letter to decrypt, subtract by 'a', add len of alphabet, mod 26 and add 'a' for roll 
+            letter = ((letter - shift - 97 + 26) % 26) + 97;
         }
-        decrypted[i] = (char) chara;
+        answer[i] = (char) letter; // places decrpyted letter into the answer  
     }
-    return decrypted;
+    return answer;
 }
 
-void signal_handler(int signal) {
-    //if dungeon signal then decrypt
-    if(signal == DUNGEON_SIGNAL){
-        //gets the key
-        int key = (int) dungeon->barrier.spell[0] % 26;
-        //decrypts and copies
-        char* decrypted = decrypt(dungeon->barrier.spell + 1, key);
-        strcpy(dungeon->wizard.spell, decrypted);  
-        free(decrypted);   
+void wiz_signal_handler(int signals) { // handler to access shared memory upon receiving signal
+    if (signals == DUNGEON_SIGNAL){
+        // calls caesar cypher function with encrypted spell and first letter as shift
+        char* decrypted = caesar_cypher(dungeon->barrier.spell + 1, dungeon->barrier.spell[0]);
+        strcpy(dungeon->wizard.spell, decrypted); // copies in the decrpyted message into the wizard's spell field
     }
-    //if semaphore signal holds down lever one
-    else if (signal == SEMAPHORE_SIGNAL){
-        sem_t *door_sem_1 = sem_open("/LeverOne", 0);
-        sem_post(door_sem_1);
+    else if (signals == SEMAPHORE_SIGNAL){
+        sem_t *sem_two = sem_open(dungeon_lever_two, 0);
+        sem_post(sem_two);
         if (strlen(dungeon->spoils) == 4){
-            sem_t *door_sem_1 = sem_open("/LeverOne", 0);
+            sem_t *sem_two = sem_open(dungeon_lever_two, 0);
         }
     }
 }
-
 
 int main() {
-//open shared memory
-    int shm_fd = shm_open(dungeon_shm_name, O_RDWR, 0);
+    int fd = shm_open(dungeon_shm_name, O_RDWR, 0); // opens the shared memory segment
+    // maps the shared memeory
+    dungeon = mmap(NULL, sizeof(struct Dungeon), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
 
-    // Map the shared memory into the process's address space
-    dungeon = mmap(NULL, sizeof(struct Dungeon), PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
+    struct sigaction act; // creates sigaction struct
+    act.sa_handler = &wiz_signal_handler; // calls the signal handler for wizard 
+    sigemptyset(&act.sa_mask);
+    act.sa_flags = 0;
+    sigaction(DUNGEON_SIGNAL, &act, NULL); // changes the action of the process to dungeon signal
+    sigaction(SEMAPHORE_SIGNAL, &act, NULL);
 
-    //signal hnadler
-    struct sigaction sa;
-    sa.sa_handler = &signal_handler;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = 0;
-    sigaction(DUNGEON_SIGNAL, &sa, NULL);
-    sigaction(SEMAPHORE_SIGNAL, &sa, NULL);
-
-    //wait for the signal
-    while(dungeon->running){
+    while(dungeon->running){ // pauses dungeon
         pause();
     }
-    // unmap shared memory object from process address space
-    munmap(dungeon, sizeof(struct Dungeon));
-    shm_unlink(dungeon_shm_name);
+    
+    munmap(dungeon, sizeof(struct Dungeon)); // unmaps the shared memory
+    shm_unlink(dungeon_shm_name); // removes the shared memory
+    
     return 0;
 }
