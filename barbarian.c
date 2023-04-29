@@ -1,52 +1,53 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/mman.h>
-#include <fcntl.h>
-#include <signal.h> 
-#include <ctype.h>
-#include <semaphore.h>
+#include <signal.h>
+#include <sys/types.h>
 #include <string.h>
-
+#include <semaphore.h>
 #include "dungeon_info.h"
 #include "dungeon_settings.h"
+#include <sys/mman.h>
+#include <fcntl.h>
+#include <ctype.h>
 
-struct Dungeon* dungeon; // initializes the dungeon struct in this class
-
-void barb_signal_handler(int signals) { // upon receiving signal, the following actions will occur
-    if (signals == DUNGEON_SIGNAL){
-        int healthCopy = dungeon->enemy.health; // copies the health from enemy
-        dungeon->barbarian.attack = healthCopy; // places enemy's health to barbarian attack
+struct Dungeon* dungeon;
+// handler for when a signal is recieved the barbarian will do something depending on what that thing is
+void signal_handler(int signal) {
+    //if its a dungeon signal is recieved copy the health into attack
+    if (signal == DUNGEON_SIGNAL){
+        dungeon->barbarian.attack = dungeon-> enemy.health;
     }
-    else if (signals == SEMAPHORE_SIGNAL){
-        sem_t *sem_one = sem_open(dungeon_lever_one, 0);
-        sem_post(sem_one);
+    //if it is a semaphore signal make it hold down lever two
+    else if (signal == SEMAPHORE_SIGNAL){
+        sem_t *door_sem_2 = sem_open("/LeverTwo", 0);
+        sem_post(door_sem_2);
         if (strlen(dungeon->spoils) == 4){
-            sem_t *sem_one = sem_open(dungeon_lever_one, 0);
+            sem_t *door_sem_2 = sem_open("/LeverTwo", 0);
         }
     }
 }
 
 
 int main() {
+    //open shared memory
+    int shm = shm_open(dungeon_shm_name, O_RDWR, 0);
 
-    int fd = shm_open(dungeon_shm_name, O_RDWR, 0); // opens and reads the shared memory segment
-    // maps the shared memeory 
-    dungeon = mmap(NULL, sizeof(struct Dungeon), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-    
-    struct sigaction act; // creates sigaction struct
-    act.sa_handler = &barb_signal_handler; // calls the signal handler for barbarian 
-    sigemptyset(&act.sa_mask);
-    act.sa_flags = 0;
-    sigaction(DUNGEON_SIGNAL, &act, NULL); // changes the action of the process to dungeon signal
-    sigaction(SEMAPHORE_SIGNAL, &act, NULL);
+    // Map the shared memory into the process's address space
+    dungeon = mmap(NULL, sizeof(struct Dungeon), PROT_READ | PROT_WRITE, MAP_SHARED, shm, 0);
 
-    while(dungeon->running){ // pauses dungeon
+    //signal hnadler
+    struct sigaction signal;
+    signal.sa_handler = &signal_handler;
+    sigemptyset(&signal.sa_mask);
+    signal.sa_flags = 0;
+    sigaction(DUNGEON_SIGNAL, &signal, NULL);
+    sigaction(SEMAPHORE_SIGNAL, &signal, NULL);
+
+    //wait for the signal
+    while(dungeon->running){
         pause();
     }
-    
-    munmap(dungeon, sizeof(struct Dungeon)); // unmaps the shared memory
-    shm_unlink(dungeon_shm_name); // removes the shared memory
 
     return 0;
 }
