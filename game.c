@@ -18,8 +18,7 @@
 
 
 struct Dungeon* dungeon;
-sem_t *sem_one;
-sem_t *sem_two;
+
 int main(int argc, char *argv[]) {
     
     //open shared memory
@@ -32,8 +31,8 @@ int main(int argc, char *argv[]) {
     dungeon->running = true;
     
     //set up semaphores
-    sem_one = sem_open("/LeverOne", O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
-    sem_two = sem_open("/LeverTwo", O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
+    sem_t *sem_one = sem_open("/LeverOne", O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
+    sem_t *sem_two = sem_open("/LeverTwo", O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 0);
 
 
     // Fork processes for barbarian, wizard, and rogue
