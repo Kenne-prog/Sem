@@ -72,18 +72,18 @@ void signal_handler(int signal) {
 int main() {
 
     //open shared memory
-    int shm = shm_open(dungeon_shm_name, O_RDWR, 0);
+    int fd = shm_open(dungeon_shm_name, O_RDWR, 0);
 
     // Map the shared memory into the process's address space
-    dungeon = mmap(NULL, sizeof(struct Dungeon), PROT_READ | PROT_WRITE, MAP_SHARED, shm, 0);
+    dungeon = mmap(NULL, sizeof(struct Dungeon), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
 
     //signal hnadler
-    struct sigaction signal;
-    signal.sa_handler = &signal_handler;
-    sigemptyset(&signal.sa_mask);
-    signal.sa_flags = 0;
-    sigaction(DUNGEON_SIGNAL, &signal, NULL);
-    sigaction(SEMAPHORE_SIGNAL, &signal, NULL);
+    struct sigaction act;
+    act.sa_handler = &signal_handler;
+    sigemptyset(&act.sa_mask);
+    act.sa_flags = 0;
+    sigaction(DUNGEON_SIGNAL, &act, NULL);
+    sigaction(SEMAPHORE_SIGNAL, &act, NULL);
 
     //wait for the signal
     sleep(1);
